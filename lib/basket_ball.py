@@ -1,3 +1,5 @@
+from decimal import *
+
 def game_dict():
     return {
         "home": {
@@ -182,3 +184,55 @@ def game_dict():
             ]
         }
     }
+
+def num_points_per_game(name):
+    for player in game_dict()['home']['players']:
+        if player['name'] == name:
+            return player['points_per_game']
+    for player in game_dict()['away']['players']:
+        if player['name'] == name:
+            return player['points_per_game']
+
+def player_age(name):
+    for player in game_dict()['home']['players']:
+        if player['name'] == name:
+            return player['age']
+    for player in game_dict()['away']['players']:
+        if player['name'] == name:
+            return player['age']
+
+def team_colors(team_name):
+    for team in game_dict():
+        if game_dict()[team]['team_name'] == team_name:
+            return game_dict()[team]['colors']
+
+def team_names():
+    return [game_dict()[team]['team_name'] for team in game_dict()]
+
+def player_numbers(team_name):
+    if game_dict()['home']['team_name'] == team_name:
+        return [player['number'] for player in game_dict()['home']['players']]
+    elif game_dict()['away']['team_name'] == team_name:
+        return [player['number'] for player in game_dict()['away']['players']]
+
+def player_stats(name):
+    for player in game_dict()['home']['players']:
+        if player['name'] == name:
+            return player
+    for player in game_dict()['away']['players']:
+        if player['name'] == name:
+            return player
+
+def average_rebounds_by_shoe_brand():
+    brands = ['Nike', 'Adidas', 'Puma', 'Jordan']
+    output = {}
+    for shoe_brand in brands:
+        rebounds_of_chosen_brand = [player['rebounds_per_game'] for player in game_dict()['home']['players'] if player['shoe_brand'] == shoe_brand]
+        for player in game_dict()['away']['players']:
+            if player['shoe_brand'] == shoe_brand:
+                rebounds_of_chosen_brand.append(player['rebounds_per_game'])
+        total_rebounds = 0
+        for rebond in rebounds_of_chosen_brand:
+            total_rebounds += rebond
+        average_rebounds = total_rebounds/len(rebounds_of_chosen_brand)
+        print(f'{shoe_brand}:  {Decimal(average_rebounds).quantize(Decimal(".01"))}')
